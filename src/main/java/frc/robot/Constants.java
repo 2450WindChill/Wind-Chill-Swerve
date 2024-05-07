@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.revrobotics.CANSparkBase.IdleMode;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -22,7 +21,7 @@ import frc.robot.libs.ModuleConfiguration;
  */
 public final class Constants {
 
-  public static class OperatorConstants {
+  public static class ControllerConstants {
     public static final int kDriverControllerPort = 0;
      public static final int kOperatorControllerPort = 1;
   }
@@ -53,28 +52,6 @@ public final class Constants {
 
   public static final double openLoopRamp = 0.25;
   public static final double closedLoopRamp = 0.0;
-
-  public static final double speakerAngle = -8.0;
-  public static final double ampAngle = -41.14;
-  public static final double zeroLaunchAngle = -1.5;
-  
-  public static final double farNoteLaunch = -21.83;
-
-  public static final double zeroElevator = 0.0;
-  public static final double ampElevator = 60;
-
-  public static final double sourceAngle = -17.1;
-  public static final double sourceHeight = 0.0;
-
-  public static final double maxHeight = 130;
-
-  public static final double climbingAngle = -24.6;
-  public static final double unstuckNoteAngle = -10.0;
-
-  public static final double intakeDown = 12; // 9.5
-  
-  public static final double intakeUp = 0.0;
-   public static final double zeroIntake = -0.6;
 
   public static final double rotationsPerOneFoot = 0.25;
 
@@ -184,41 +161,6 @@ public final class Constants {
         canCoderID);
   }
   
-
-  public static final double ksVolts = 0.22;
-  public static final double kvVoltSecondsPerMeter = 1.98;
-  public static final double kaVoltSecondsSquaredPerMeter = 0.2;
-  public static final double kPDriveVel = 8.5;
-
-  public static final double autoVoltageConstraint = 0;
-
-  public static final double kMaxSpeedMetersPerSecond = 3;
-  public static final double kMaxAccelerationMetersPerSecondSquared = 1;
-
-  // Reasonable baseline values for a RAMSETE follower in units of meters and seconds
-  public static final double kRamseteB = 2;
-  public static final double kRamseteZeta = 0.7;
-
-  public static final double kPThetaController = 1;
   public static final double moveToPoseSpeed = 0.05;
   public static final double moveToPoseRotationSpeed = 0.5;
-
-  public static final class BlueAllianceFieldElementsPoses {
-    public static Pose2d source;
-    public static Pose2d amp;
-    public static Pose2d speaker;
-  }
-
-  public static final class RedAllianceFieldElementsPoses {
-    public static Pose2d source;
-    public static Pose2d amp;
-    public static Pose2d speaker;
-  }
-
-  // In meters
-  public static final int[] distancesFromSpeaker = {0,1,2,3,4,5,6};
-
-  // In encoder values
-  // IDS HERE MATCH WITH IDS IN DISTANCESfROMsPEAKER
-  public static final double[] anglesToShootInSpeaker = {0, 0, -13.85};
 }

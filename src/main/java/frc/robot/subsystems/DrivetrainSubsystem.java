@@ -31,7 +31,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.WindChillSwerveModule;
-import frc.robot.commands.TrajectoryCommand;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.commands.FollowPathHolonomic;
@@ -44,7 +43,6 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public CANSparkMax testMotor;
   public CANcoder canCoder;
   public HolonomicDriveController holonomicDriveController;
-  public TrajectoryCommand m_TrajectoryGeneratorSubsystem;
 
   /** Creates a new ExampleSubsystem. */
   public DrivetrainSubsystem() {
