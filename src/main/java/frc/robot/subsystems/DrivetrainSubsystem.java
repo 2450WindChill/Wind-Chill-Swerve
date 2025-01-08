@@ -7,9 +7,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.Pigeon2;
-import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
-import com.pathplanner.lib.util.PIDConstants;
-import com.pathplanner.lib.util.ReplanningConfig;
+// import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+// import com.pathplanner.lib.util.PIDConstants;
+// import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkMax;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -32,9 +32,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.WindChillSwerveModule;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.FollowPathHolonomic;
-import com.pathplanner.lib.path.PathPlannerPath;
+// import com.pathplanner.lib.auto.AutoBuilder;
+// import com.pathplanner.lib.commands.FollowPathHolonomic;
+// import com.pathplanner.lib.path.PathPlannerPath;
 
 public class DrivetrainSubsystem extends SubsystemBase {
   public final Pigeon2 gyro;
@@ -53,33 +53,33 @@ public class DrivetrainSubsystem extends SubsystemBase {
         //SmartDashboard.putData("Reset pose", Commands.runOnce(() -> getX()));
 
     // Configure AutoBuilder last
-    AutoBuilder.configureHolonomic(
-        PoseEstimatorSubsystem::getBotPose, // Robot pose supplier
-        PoseEstimatorSubsystem::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
-        this::getAutoSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-        new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
-            new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-            0.5, // Max module speed, in m/s
-            Units.inchesToMeters(15.6875), // Drive base radius in meters. Distance from robot center to furthest
-                                           // module.
-            new ReplanningConfig() // Default path replanning config. See the API for the options here
-        ),
-        () -> {
-          // Boolean supplier that controls when the path will be mirrored for the red
-          // alliance
-          // This will flip the path being followed to the red side of the field.
-          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+    // AutoBuilder.configureHolonomic(
+    //     PoseEstimatorSubsystem::getBotPose, // Robot pose supplier
+    //     PoseEstimatorSubsystem::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+    //     this::getAutoSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+    //     this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+    //     new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+    //         new PIDConstants(2.0, 0.0, 0.0), // Translation PID constants
+    //         new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+    //         0.5, // Max module speed, in m/s
+    //         Units.inchesToMeters(15.6875), // Drive base radius in meters. Distance from robot center to furthest
+    //                                        // module.
+    //         new ReplanningConfig() // Default path replanning config. See the API for the options here
+    //     ),
+    //     () -> {
+    //       // Boolean supplier that controls when the path will be mirrored for the red
+    //       // alliance
+    //       // This will flip the path being followed to the red side of the field.
+    //       // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-          var alliance = DriverStation.getAlliance();
-          if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
-          }
-          return false;
-        },
-        this // Reference to this subsystem to set requirements
-    );
+    //       var alliance = DriverStation.getAlliance();
+    //       if (alliance.isPresent()) {
+    //         return alliance.get() == DriverStation.Alliance.Red;
+    //       }
+    //       return false;
+    //     },
+    //     this // Reference to this subsystem to set requirements
+    // );
 
     gyro = new Pigeon2(Constants.pigeonID, "canivore");
     // gyro.getConfigurator().apply(new Pigeon2Configuration());
@@ -115,36 +115,36 @@ public class DrivetrainSubsystem extends SubsystemBase {
     }
   }
 
-  public Command followPathCommand(String pathName) {
-    PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
+  // public Command followPathCommand(String pathName) {
+  //   PathPlannerPath path = PathPlannerPath.fromPathFile(pathName);
 
-    return new FollowPathHolonomic(
-        path,
-        PoseEstimatorSubsystem::getBotPose, // Robot pose supplier
-        this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-        this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
-        new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
-            new PIDConstants(Constants.driveKP, Constants.driveKI, Constants.driveKD), // Translation PID constants
-            new PIDConstants(Constants.angleKP, Constants.angleKI, Constants.angleKD), // Rotation PID constants
-            Constants.maxSpeed, // Max module speed, in m/s
-            Constants.driveBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
-            new ReplanningConfig() // Default path replanning config. See the API for the options here
-        ),
-        () -> {
-          // Boolean supplier that controls when the path will be mirrored for the red
-          // alliance
-          // This will flip the path being followed to the red side of the field.
-          // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+  //   return new FollowPathHolonomic(
+  //       path,
+  //       PoseEstimatorSubsystem::getBotPose, // Robot pose supplier
+  //       this::getSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+  //       this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+  //       new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+  //           new PIDConstants(Constants.driveKP, Constants.driveKI, Constants.driveKD), // Translation PID constants
+  //           new PIDConstants(Constants.angleKP, Constants.angleKI, Constants.angleKD), // Rotation PID constants
+  //           Constants.maxSpeed, // Max module speed, in m/s
+  //           Constants.driveBaseRadius, // Drive base radius in meters. Distance from robot center to furthest module.
+  //           new ReplanningConfig() // Default path replanning config. See the API for the options here
+  //       ),
+  //       () -> {
+  //         // Boolean supplier that controls when the path will be mirrored for the red
+  //         // alliance
+  //         // This will flip the path being followed to the red side of the field.
+  //         // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-          var alliance = DriverStation.getAlliance();
-          if (alliance.isPresent()) {
-            return alliance.get() == DriverStation.Alliance.Red;
-          }
-          return false;
-        },
-        this // Reference to this subsystem to set requirements
-    );
-  }
+  //         var alliance = DriverStation.getAlliance();
+  //         if (alliance.isPresent()) {
+  //           return alliance.get() == DriverStation.Alliance.Red;
+  //         }
+  //         return false;
+  //       },
+  //       this // Reference to this subsystem to set requirements
+  //   );
+  // }
 
   public SwerveModulePosition[] getPositions() {
     SwerveModulePosition[] positions = new SwerveModulePosition[swerveModules.length];

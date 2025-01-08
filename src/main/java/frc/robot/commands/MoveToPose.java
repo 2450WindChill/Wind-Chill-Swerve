@@ -22,21 +22,17 @@ public class MoveToPose extends Command {
   public double currentY;
   public double currentRotation;
 
-  public double calculatedX;
-  public double calculatedY;
-  public double calculatedRotation;
-
-  public double finalXSpeed;
-  public double finalYSpeed;
-  public double finalRotation;
+  public double xError;
+  public double yError;
+  public double rotationError;
 
   public Pose2d m_targetPose;
 
   public Translation2d speeds;
 
-  PIDController xPIDController = new PIDController(0.1, 0.1, 0);
-  PIDController yPIDController = new PIDController(0.1, 0.1, 0);
-  PIDController rotationPIDController = new PIDController(0.1, 0.1, 0.0036);
+  // PIDController xPIDController = new PIDController(0.1, 0.1, 0);
+  // PIDController yPIDController = new PIDController(0.1, 0.1, 0);
+  // PIDController rotationPIDController = new PIDController(0.1, 0.1, 0.0036);
 
   /**
    * Creates a new ExampleCommand.
@@ -55,13 +51,13 @@ public class MoveToPose extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    xPIDController.reset();
-    yPIDController.reset();
-    rotationPIDController.reset();
+    // xPIDController.reset();
+    // yPIDController.reset();
+    // rotationPIDController.reset();
 
-    xPIDController.setSetpoint(m_targetPose.getX());
-    xPIDController.setSetpoint(m_targetPose.getY());
-    rotationPIDController.setSetpoint(m_targetPose.getRotation().getDegrees());
+    // xPIDController.setSetpoint(m_targetPose.getX());
+    // xPIDController.setSetpoint(m_targetPose.getY());
+    // rotationPIDController.setSetpoint(m_targetPose.getRotation().getDegrees());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -70,45 +66,18 @@ public class MoveToPose extends Command {
 
     // Finds translation and rotation to desired pose
     System.out.println("MOVE TO POSE");
-    calculatedX = m_targetPose.getX() - m_poseEstimate.getBotX();
-    calculatedY = m_targetPose.getY() - m_poseEstimate.getBotY();
-    calculatedRotation = m_targetPose.getRotation().getDegrees() - m_poseEstimate.getBotRotation();
+    xError = m_targetPose.getX() - m_poseEstimate.getBotX();
+    yError = m_targetPose.getY() - m_poseEstimate.getBotY();
+    rotationError = m_targetPose.getRotation().getDegrees() - m_poseEstimate.getBotRotation();
 
-    SmartDashboard.putNumber("Calculated X", calculatedX);
-    SmartDashboard.putNumber("Calculated Y", calculatedY);
-    SmartDashboard.putNumber("Calculated Rotation", calculatedRotation);
-
-    // Finds if the X component of the translation is +, -, or 0
-    if (calculatedX > 0.1) {
-      finalXSpeed = -Constants.moveToPoseSpeed;
-    } else if (calculatedX < 0.1) {
-      finalXSpeed = Constants.moveToPoseSpeed;
-    } else {
-      finalXSpeed = 0;
-    }
-
-    // Finds if the Y component of the translation is +, -, or 0
-    if (calculatedY > 0.1) {
-      finalYSpeed = -Constants.moveToPoseSpeed;
-    } else if (calculatedY < 0.1) {
-      finalYSpeed = Constants.moveToPoseSpeed;
-    } else {
-      finalYSpeed = 0;
-    }
-
-    // Finds if the rotation component of the translation is +, -, or 0
-    if (calculatedRotation > 5) {
-      finalRotation = Constants.moveToPoseRotationSpeed;
-    } else if (calculatedRotation < -5) {
-      finalRotation = -Constants.moveToPoseRotationSpeed;
-    } else {
-      finalRotation = 0;
-    }
+    SmartDashboard.putNumber("X Error", xError);
+    SmartDashboard.putNumber("Y Error", yError);
+    SmartDashboard.putNumber("Rotation Error", rotationError);
 
     // Calls .drive() with speeds and rotations towards desired pose
     m_drivetrainSubsystem.drive(
-      new Translation2d(finalXSpeed, finalYSpeed),
-      finalRotation,
+      new Translation2d(xError, yError).times(Constants.maxSpeed),
+      rotationError * Constants.maxAngularVelocity,
       false,
       false
     );
@@ -128,7 +97,7 @@ public class MoveToPose extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if ((Math.abs(calculatedRotation) <= 60) && (Math.abs(calculatedX) <= 0.1) && (Math.abs(calculatedY) <= 0.1)) {
+    if ((Math.abs(rotationError) <= 5) && (Math.abs(xError) <= 0.05) && (Math.abs(yError) <= 0.05)) {
       System.out.println("MOVE TO POSE IS FINISHED");
       return true;
     } else {
