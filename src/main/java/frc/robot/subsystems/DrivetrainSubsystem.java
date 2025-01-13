@@ -10,7 +10,7 @@ import com.ctre.phoenix6.hardware.Pigeon2;
 // import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 // import com.pathplanner.lib.util.PIDConstants;
 // import com.pathplanner.lib.util.ReplanningConfig;
-import com.revrobotics.CANSparkMax;
+import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
@@ -40,7 +40,7 @@ public class DrivetrainSubsystem extends SubsystemBase {
   public final Pigeon2 gyro;
   public WindChillSwerveModule[] swerveModules;
   public SwerveDriveOdometry swerveOdometry;
-  public CANSparkMax testMotor;
+  public SparkMax testMotor;
   public CANcoder canCoder;
   public HolonomicDriveController holonomicDriveController;
 
@@ -279,12 +279,12 @@ public class DrivetrainSubsystem extends SubsystemBase {
 
   public void motorAuto() {
     System.err.println("Motor Auto go");
-    drive(new Translation2d(-0.8, 0), gyro.getYaw().getValue(), true, false);
+    drive(new Translation2d(-0.8, 0), gyro.getYaw().getValueAsDouble(), true, false);
   }
 
   public void stopAuto() {
     System.err.println("Motor auto stop");
-    drive(new Translation2d(0, 0), gyro.getYaw().getValue(), true, false);
+    drive(new Translation2d(0, 0), gyro.getYaw().getValueAsDouble(), true, false);
   }
 
   @Override
