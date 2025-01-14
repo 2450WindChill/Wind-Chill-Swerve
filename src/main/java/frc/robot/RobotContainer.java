@@ -6,9 +6,10 @@ package frc.robot;
 
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.DefaultDriveCommand;
+import frc.robot.commands.MoveToPoseV1;
 import frc.robot.libs.LimelightHelpers;
 import frc.robot.subsystems.DrivetrainSubsystem;
-
+import frc.robot.subsystems.LimelightSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.PoseEstimatorSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,6 +21,7 @@ public class RobotContainer {
   // Subsystems
   public final DrivetrainSubsystem m_drivetrainSubsystem = new DrivetrainSubsystem();
   private final PoseEstimatorSubsystem m_poseEstimator = new PoseEstimatorSubsystem(m_drivetrainSubsystem);
+  private final LimelightSubsystem m_limelightSubsystem = new LimelightSubsystem();
 
   // Controllers
   private final CommandXboxController m_driverController = new CommandXboxController(ControllerConstants.kDriverControllerPort);
@@ -54,6 +56,7 @@ public class RobotContainer {
   private void configureBindings() {
     // Driver
     m_driverController.x().onTrue(Commands.runOnce(() -> m_drivetrainSubsystem.zeroGyro(), m_drivetrainSubsystem));
+    m_driverController.y().onTrue(new MoveToPoseV1(m_drivetrainSubsystem, m_limelightSubsystem));
   }
 
   /*
@@ -66,7 +69,8 @@ public class RobotContainer {
   private void configureLimelight() {
     LimelightHelpers.setPipelineIndex("limelight", 0);
     LimelightHelpers.setLEDMode_ForceOff("limelight");
-    LimelightHelpers.setCameraMode_Processor("limelight");
+    // TODO: Find updated version
+    //LimelightHelpers.setCameraMode_Processor("limelight");
     LimelightHelpers.setCameraPose_RobotSpace("limelight", 0, 0, 0, 0, 0, 0);
   }
 
