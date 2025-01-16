@@ -102,6 +102,11 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
         return LimelightHelpers.getTargetPose3d_RobotSpace("limelight");
     }
 
+    // Get the 3d pose of the targetted apriltag realtive to the robot
+    public Pose3d getBotPoseToAprilTag() {
+        return LimelightHelpers.getBotPose3d_TargetSpace("limelight");
+    }
+
     // Get the 2d bot pose of the primary apriltag in the limelights view relative
     // to the robots pose
     public Pose2d getAprilTagPoseToBot2d() {

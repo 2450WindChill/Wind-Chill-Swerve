@@ -6,10 +6,13 @@ package frc.robot;
 
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.MoveToPoseV1;
+import frc.robot.commands.AlignToTargetX;
 import frc.robot.libs.LimelightHelpers;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.PoseEstimatorSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -54,9 +57,11 @@ public class RobotContainer {
    */
 
   private void configureBindings() {
+    ShuffleboardTab tab = Shuffleboard.getTab("Test");
+    tab.add("AlignToTargetX", new AlignToTargetX(m_drivetrainSubsystem, m_limelightSubsystem)).withWidget(BuiltInWidgets.kCommand);
     // Driver
     m_driverController.x().onTrue(Commands.runOnce(() -> m_drivetrainSubsystem.zeroGyro(), m_drivetrainSubsystem));
-    m_driverController.y().onTrue(new MoveToPoseV1(m_drivetrainSubsystem, m_limelightSubsystem));
+    m_driverController.y().onTrue(new AlignToTargetX(m_drivetrainSubsystem, m_limelightSubsystem));
   }
 
   /*
@@ -72,6 +77,7 @@ public class RobotContainer {
     // TODO: Find updated version
     //LimelightHelpers.setCameraMode_Processor("limelight");
     LimelightHelpers.setCameraPose_RobotSpace("limelight", 0, 0, 0, 0, 0, 0);
+    SmartDashboard.putData("AlignToTargetX", new AlignToTargetX(m_drivetrainSubsystem, m_limelightSubsystem));
   }
 
   private void configureNamedCommands() {

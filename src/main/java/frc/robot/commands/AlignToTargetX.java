@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import frc.robot.Constants;
+import frc.robot.libs.LimelightHelpers;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
 import frc.robot.subsystems.PoseEstimatorSubsystem;
@@ -14,7 +15,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class MoveToPoseV1 extends Command {
+public class AlignToTargetX extends Command {
   @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
   private final DrivetrainSubsystem m_drivetrainSubsystem;
   private final LimelightSubsystem m_limelightSubsystem;
@@ -28,7 +29,7 @@ public class MoveToPoseV1 extends Command {
    *
    * @param subsystem The subsystem used by this command.
    */
-  public MoveToPoseV1(DrivetrainSubsystem drivetrainSubsystem, LimelightSubsystem limelightSubsystem) {
+  public AlignToTargetX(DrivetrainSubsystem drivetrainSubsystem, LimelightSubsystem limelightSubsystem) {
     m_drivetrainSubsystem = drivetrainSubsystem;
     m_limelightSubsystem = limelightSubsystem;
 
@@ -45,25 +46,28 @@ public class MoveToPoseV1 extends Command {
 
     // xPIDController.setSetpoint(m_targetPose.getX());
     // xPIDController.setSetpoint(m_targetPose.getY());
-    // rotationPIDController.setSetpoint(m_targetPose.getRotation().getDegrees());
+    // rotationPIDController.setSetpoint(m_targetPose.getRotation().getDegrees()); 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    final var rot_limelight = m_limelightSubsystem.limelight_aim_proportional();
-    double rot = rot_limelight;
+    //final var rot_limelight = m_limelightSubsystem.limelight_aim_proportional();
+    // double rot = rot_limelight;
 
-    final var forward_limelight = m_limelightSubsystem.limelight_range_proportional();
-     double xSpeed = forward_limelight;
+    //final var forward_limelight = m_limelightSubsystem.limelight_range_proportional();
+     double ySpeed = -0.5;
 
+     if (m_limelightSubsystem.getTY() > 0) {
+      ySpeed = ySpeed * -1;
+    }
 
     // Calls .drive() with speeds and rotations towards desired pose
     m_drivetrainSubsystem.drive(
-      new Translation2d(xSpeed, 0).times(Constants.maxSpeed),
+      new Translation2d(0, ySpeed).times(Constants.maxSpeed),
     //   rotationError * Constants.maxAngularVelocity,
-    rot,
+    0,
       false,
       false
     );
@@ -85,7 +89,6 @@ public class MoveToPoseV1 extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // TODO: make finish logic!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! pls
-    return true;
+    return false;
   }
 }

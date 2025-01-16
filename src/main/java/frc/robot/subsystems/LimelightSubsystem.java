@@ -1,11 +1,13 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.libs.LimelightHelpers;
 import frc.robot.libs.LimelightHelpers.RawDetection;
 import frc.robot.libs.LimelightHelpers.RawFiducial;
 
-public class LimelightSubsystem {
+public class LimelightSubsystem extends SubsystemBase {
 
     // // Basic targeting data
     // double tx = LimelightHelpers.getTX(""); // Horizontal offset from crosshair to target in degrees
@@ -29,7 +31,7 @@ public class LimelightSubsystem {
         // LimelightHelpers.setLEDMode_ForceBlink("");
 
         // Set a custom crop window for improved performance (-1 to 1 for each value)
-        LimelightHelpers.setCropWindow("", -0.5, 0.5, -0.5, 0.5);
+        LimelightHelpers.setCropWindow("", -1, 1, -1, 1);
 
         // Change the camera pose relative to robot center (x forward, y left, z up,
         // degrees)
@@ -110,5 +112,23 @@ public class LimelightSubsystem {
       targetingAngularVelocity *= -1.0;
   
       return targetingAngularVelocity;
+    }
+
+    public void periodic() {
+      SmartDashboard.putNumber("TX", LimelightHelpers.getTX("limelight"));
+      SmartDashboard.putNumber("TY", LimelightHelpers.getTY("limelight"));
+      SmartDashboard.putNumber("TA", LimelightHelpers.getTA("limelight"));
+    }
+
+    public double getTX() {
+      return LimelightHelpers.getTX("limelight");
+    }
+
+    public double getTY() {
+      return LimelightHelpers.getTY("limelight");
+    }
+
+    public double getTA() {
+      return LimelightHelpers.getTA("limelight");
     }
 }
