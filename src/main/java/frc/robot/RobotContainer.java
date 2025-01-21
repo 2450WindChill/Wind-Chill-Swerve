@@ -6,7 +6,11 @@ package frc.robot;
 
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.commands.DefaultDriveCommand;
-import frc.robot.commands.AlignToTargetX;
+import frc.robot.commands.SquareToAprilTag;
+import frc.robot.commands.StrafeToAprilTag;
+import frc.robot.commands.AlignToAprilTag;
+import frc.robot.commands.AlignToAprilTagSequential;
+import frc.robot.commands.ApproachAprilTag;
 import frc.robot.libs.LimelightHelpers;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.LimelightSubsystem;
@@ -47,7 +51,7 @@ public class RobotContainer {
     // Configures
     configureNamedCommands();
     configureBindings();
-    configureLimelight();
+    // configureLimelight();
     configureAutoChooser();
   }
 
@@ -58,10 +62,14 @@ public class RobotContainer {
 
   private void configureBindings() {
     ShuffleboardTab tab = Shuffleboard.getTab("Test");
-    tab.add("AlignToTargetX", new AlignToTargetX(m_drivetrainSubsystem, m_limelightSubsystem)).withWidget(BuiltInWidgets.kCommand);
+    tab.add("SquareToAprilTag", new SquareToAprilTag(m_poseEstimator, m_drivetrainSubsystem)).withWidget(BuiltInWidgets.kCommand);
+    tab.add("StrafeToAprilTag", new StrafeToAprilTag(m_poseEstimator, m_drivetrainSubsystem)).withWidget(BuiltInWidgets.kCommand);
+    tab.add("AlignToAprilTag", new AlignToAprilTag(m_poseEstimator, m_drivetrainSubsystem)).withWidget(BuiltInWidgets.kCommand);
+    tab.add("ApproachAprilTag", new ApproachAprilTag(m_poseEstimator, m_drivetrainSubsystem)).withWidget(BuiltInWidgets.kCommand);
+    tab.add("AlignToAprilTagSequential", new AlignToAprilTagSequential(m_poseEstimator, m_drivetrainSubsystem)).withWidget(BuiltInWidgets.kCommand);
+  
     // Driver
     m_driverController.x().onTrue(Commands.runOnce(() -> m_drivetrainSubsystem.zeroGyro(), m_drivetrainSubsystem));
-    m_driverController.y().onTrue(new AlignToTargetX(m_drivetrainSubsystem, m_limelightSubsystem));
   }
 
   /*
@@ -71,14 +79,14 @@ public class RobotContainer {
    * -Proccesor Mode
    * -Pose relative to robot center (Meters and Degrees)
    */
-  private void configureLimelight() {
-    LimelightHelpers.setPipelineIndex("limelight", 0);
-    LimelightHelpers.setLEDMode_ForceOff("limelight");
-    // TODO: Find updated version
-    //LimelightHelpers.setCameraMode_Processor("limelight");
-    LimelightHelpers.setCameraPose_RobotSpace("limelight", 0, 0, 0, 0, 0, 0);
-    SmartDashboard.putData("AlignToTargetX", new AlignToTargetX(m_drivetrainSubsystem, m_limelightSubsystem));
-  }
+  // private void configureLimelight() {
+  //   LimelightHelpers.setPipelineIndex("limelight", 0);
+  //   LimelightHelpers.setLEDMode_ForceOff("limelight");
+  //   // TODO: Find updated version
+  //   //LimelightHelpers.setCameraMode_Processor("limelight");
+  //   LimelightHelpers.setCameraPose_RobotSpace("limelight", 0, 0, 0, 0, 0, 0);
+  //   SmartDashboard.putData("AlignToTargetX", new AlignToTargetX(m_drivetrainSubsystem, m_limelightSubsystem));
+  // }
 
   private void configureNamedCommands() {
 

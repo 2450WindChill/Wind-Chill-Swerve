@@ -36,11 +36,11 @@ public class LimelightSubsystem extends SubsystemBase {
         // Change the camera pose relative to robot center (x forward, y left, z up,
         // degrees)
         LimelightHelpers.setCameraPose_RobotSpace("",
-                0.5, // Forward offset (meters)
-                0.0, // Side offset (meters)
-                0.5, // Height offset (meters)
-                0.0, // Roll (degrees)
-                30.0, // Pitch (degrees)
+                0, // Forward offset (meters)
+                0, // Side offset (meters)
+                0.24, // Height offset (meters)
+                0, // Roll (degrees)
+                0, // Pitch (degrees)
                 0.0 // Yaw (degrees)
         );
 
@@ -130,5 +130,9 @@ public class LimelightSubsystem extends SubsystemBase {
 
     public double getTA() {
       return LimelightHelpers.getTA("limelight");
+    }
+
+    public boolean getTV() {
+      return LimelightHelpers.getTV("limelight");
     }
 }

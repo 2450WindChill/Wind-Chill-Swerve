@@ -39,6 +39,11 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Pose X", getBotX());
         SmartDashboard.putNumber("Pose Y", getBotY());
         SmartDashboard.putNumber("Pose Rotation", getBotRotation());
+
+        SmartDashboard.putNumber("X Pose of Apriltag", getAprilTagPoseToBot3d().getX());
+        SmartDashboard.putNumber("Y Pose of Apriltag", getAprilTagPoseToBot3d().getY());
+        SmartDashboard.putNumber("Z Pose of Apriltag", getAprilTagPoseToBot3d().getZ());
+        SmartDashboard.putNumber("Rotation of Apriltag", getAprilTagPoseToBot3d().getRotation().getY());
     }
 
     // Gets bot pose using limelight always relative to blue alliance wall
