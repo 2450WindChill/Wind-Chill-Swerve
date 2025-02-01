@@ -54,6 +54,6 @@ public class StrafeToAprilTag extends Command {
     }
 
     public boolean isFinished() {
-        return (LimelightHelpers.getTV("limelight") && !controller.atGoal());
+        return (!LimelightHelpers.getTV("limelight") || controller.atGoal());
     }
 }
